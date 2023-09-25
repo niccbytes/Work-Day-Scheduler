@@ -37,6 +37,62 @@ $(function () {
         $(this).removeClass("past present").addClass("future");
       }
     });
+
+    $(function () {
+            // Loop through each time block
+      $(".time-block").each(function () {
+        // Get the id of the time block
+        const timeBlockId = $(this).attr("id");
+    
+        // Create a unique key for localStorage
+        const localStorageKey = "userInput-" + timeBlockId;
+    
+        // Retrieve the saved user input from localStorage
+        const savedUserInput = localStorage.getItem(localStorageKey);
+    
+        // Check if there's saved user input
+        if (savedUserInput !== null) {
+          // Set the value of the textarea to the saved user input
+          $(this).find(".description").val(savedUserInput);
+        }
+
+        $(this).find(".description").on("input", function () {
+          const userInput = $(this).val();
+          localStorage.setItem(localStorageKey, userInput);
+        });
+      });
+
+
+      //for the timer and date in the header
+      $(function () {
+        function updateDateTime() {
+        const currentDate = new Date();
+      
+        const formattedDate = currentDate.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          
+        }) + ' ' + currentDate.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit", });
+      
+        // Insert the formatted date into the HTML element with the id "currentDay"
+        $("#currentDay").text(formattedDate); 
+        }
+
+        updateDateTime()
+
+        setInterval(updateDateTime, 1000);
+      
+        
+      });
+      
+      
+    });
+    
   
   });
   
@@ -44,16 +100,4 @@ $(function () {
   
 });
 
-
-
-
-
-
-
- 
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
-  // TODO: Add code to display the current date in the header of the page.
 
